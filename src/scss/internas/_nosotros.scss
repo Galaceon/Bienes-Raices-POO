@@ -1,0 +1,22 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+@use 'base/botones' as b;
+@use "sass:color";
+
+.nosotros-secction {
+    
+
+    @include m.tablet {
+        @include m.grid(2, 2rem);
+    }
+
+    blockquote {
+        font-weight: v.$black;
+        font-size: 2.2rem;
+        margin: 2rem 0;
+
+        @include m.tablet {
+            margin: 0;
+        }
+    }
+}

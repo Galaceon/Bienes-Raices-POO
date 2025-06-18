@@ -1,0 +1,11 @@
+@use 'base/variables' as v;
+@use '../base/mixins' as m;
+
+.header-pages {
+    padding: 1rem 0rem;
+    background-color: v.$grisOscuro;
+}
+
+.contenido-header-pages {
+    padding: 2rem;
+}

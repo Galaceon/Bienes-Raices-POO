@@ -1,0 +1,56 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+@use 'botones' as b;
+@use "sass:color";
+
+.dark-mode {
+    background-color: color.scale(v.$grisOscuro, $lightness: -20%);
+
+    p {
+        color: v.$blanco;
+    }
+
+    a, h1, h2, h3, h4 {
+        color: v.$gris;
+    }
+
+    .anuncio {
+        background-color: v.$grisOscuro;
+        border: solid 1px color.scale(v.$grisOscuro, $lightness: 5%);
+
+        .precio {
+            color: v.$verde;
+        }
+    }
+
+    .iconos-caracteristicas {
+        .icono {
+                filter: invert(100%);   
+            }
+    }
+
+    blockquote {
+        color: v.$gris;
+    }
+
+    .testimonial {
+        background-color: v.$grisOscuro;
+        border: solid 1px v.$gris;
+    }
+
+    .formulario {
+        label,
+        legend,
+        p {
+            color: v.$gris;
+        }
+
+        input:not([type="submit"]),
+        textarea,
+        select {
+            background-color: v.$grisOscuro;
+            border: 1px solid v.$grisOscuro;
+            color: v.$blanco;
+        }
+    }
+}

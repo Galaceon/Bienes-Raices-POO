@@ -1,0 +1,37 @@
+@use 'base/variables' as v;
+@use '../base/mixins' as m;
+
+.header {
+    padding: 0 0 1rem 0;
+    height: 70rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-image {
+    position: absolute;
+    inset: 0;
+
+    img {
+        object-position: 30% 35%;
+        object-fit: cover;
+        height: 100%;
+    }
+}
+
+.contenido-header {
+    position: absolute;
+    inset: 0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    h1 {
+        text-align: left;
+        color: v.$blanco;
+        font-weight: v.$bold;
+        line-height: 2;
+        max-width: 60rem;
+    }
+}

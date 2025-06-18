@@ -1,0 +1,52 @@
+@use 'base/variables'as v;
+@use 'base/mixins' as m;
+@use 'base/botones' as b;
+@use "sass:color";
+
+.anuncios {
+    margin-bottom: 3rem;
+}
+
+.contenedor-anuncios {
+    @include m.tablet {
+        @include m.grid(3, 2rem)
+    }
+}
+
+.anuncio {
+    background-color: v.$gris;
+    border: solid 1px color.scale(v.$grisOscuro, $lightness: 40%);
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+
+    @include m.tablet {
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    .contenido-anuncio {
+        padding: 0 1.5rem 2rem 1.5rem;
+    }
+}
+
+.precio {
+    font-size: 3rem;
+    color: v.$amarillo;
+    font-weight: v.$bold;
+}
+
+.iconos-caracteristicas {
+    max-width: 40rem;
+    padding: 0 2rem;
+    gap: 4rem;
+    justify-content: center;
+    @include m.grid(3, 1rem);
+    li {
+        display: flex;
+        gap: 1rem;
+        justify-content: space-evenly;
+        list-style: none;
+        font-weight: v.$bold;
+    }
+}
