@@ -1,0 +1,17 @@
+{
+    "name": "anton/bienesraices-poo",
+    "description": "Creando un proyecto con programacion orientada a objetos",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\" : "./classes"
+        }
+    },
+    "authors": [
+        {
+            "name": "Galaceon",
+            "email": "antoniogarcialtr@gmail.com"
+        }
+    ],
+    "require": {}
+}
