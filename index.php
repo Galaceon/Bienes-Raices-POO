@@ -4,7 +4,7 @@
     }
     $auth = $_SESSION['login'] ?? false;
 
-    require 'includes/funciones.php';
+    require 'includes/app.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

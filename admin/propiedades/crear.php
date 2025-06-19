@@ -1,5 +1,5 @@
 <?php
-    require '../../includes/funciones.php';
+    require '../../includes/app.php';
     $auth = estaAutenticado();
 
     if(!$auth) {
@@ -7,7 +7,6 @@
     }
 
     // Base de datos
-    require '../../includes/config/database.php';
     $db = conectarDB();
 
     // Consulta para obtener los vendedores
@@ -119,7 +118,6 @@
 
 <?php
     // Header
-    require '../../includes/funciones.php';
     incluirTemplate('header');
 ?>
 

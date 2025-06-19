@@ -1,6 +1,6 @@
 <?php
     // Base de Datos
-    require 'includes/config/database.php';
+    require 'includes/app.php';
     $db = conectarDB();
 
     // Obtener ID de cada Propiedad
@@ -17,7 +17,6 @@
     $propiedad = mysqli_fetch_assoc($resultadoConsulta);
 
     // Header
-    require 'includes/funciones.php';
     incluirTemplate('header');
 ?>
 

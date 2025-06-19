@@ -1,6 +1,6 @@
 <?php
     // Conexión a la DB
-    require 'includes/config/database.php';
+    require 'includes/app.php';
     $db = conectarDB();
 
 
@@ -53,7 +53,6 @@
 
 
     // Header
-    require 'includes/funciones.php';
     incluirTemplate('header');
 ?>
 

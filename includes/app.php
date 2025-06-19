@@ -1,6 +1,9 @@
 <?php // Archivo contenedor de rutas, para usarlas posteriormente 
 
+require 'funciones.php';
+require 'config/database.php';
+require __DIR__ . '/../vendor/autoload.php';
 
+use App\Propiedad;
 
-define('TEMPLATES_URL', __DIR__ . '/templates'); //nombre de la constante y su ruta absoluta, gracias a __DIR__
-define('FUNCIONES_URL', __DIR__ . 'funciones.php'); // __DIR__ : Da la ruta absoluta de este archivo, C:\users\anton\Escritorio... + funciones.php
+$propiedad = new Propiedad;

@@ -1,6 +1,6 @@
 <?php 
 
-    require 'includes/funciones.php'; // Para hacer uso de las funciones del archivo funciones.php
+    require 'includes/app.php'; // Para hacer uso de las funciones del archivo funciones.php
     incluirTemplate('header', $inicio = true); // funcion de funciones.php, devuelve el string 'header' y un valor bool que sera usado en la función
 ?>
 

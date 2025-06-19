@@ -1,5 +1,5 @@
 <?php
-    require '../includes/funciones.php';
+    require '../includes/app.php';
     $auth = estaAutenticado();
 
     if(!$auth) {
@@ -8,7 +8,6 @@
 
 
     // Importar la conexión
-    require "../includes/config/database.php";
     $db = conectarDB();
 
     // Escribir el query
