@@ -1,5 +1,17 @@
 <?php
     require '../../includes/app.php';
+
+    use App\Propiedad;
+
+    $propiedad = new Propiedad;
+
+    echo "<pre>";
+    var_dump($propiedad);
+    echo "</pre>";
+
+
+
+    // AUTENTIFICACION DE USUARIO
     $auth = estaAutenticado();
 
     if(!$auth) {
