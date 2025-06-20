@@ -1,22 +1,12 @@
 <?php
     require '../../includes/app.php';
 
+    // Importo la clase Propiedad
     use App\Propiedad;
-
-    $propiedad = new Propiedad;
-
-    echo "<pre>";
-    var_dump($propiedad);
-    echo "</pre>";
-
 
 
     // AUTENTIFICACION DE USUARIO
-    $auth = estaAutenticado();
-
-    if(!$auth) {
-        header('location: /');
-    }
+    estaAutenticado();
 
     // Base de datos
     $db = conectarDB();
