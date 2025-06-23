@@ -4,7 +4,6 @@
     // Importo la clase Propiedad
     use App\Propiedad;
 
-
     // AUTENTIFICACION DE USUARIO
     estaAutenticado();
 
@@ -17,8 +16,7 @@
 
 
     // Array con mensajes de errores
-    $errores = [];
-
+    $errores = Propiedad::getErrores();
 
     // Variables vacia para el name = '$variable' de los inputs
     $titulo = "";
@@ -32,57 +30,16 @@
     //Ejecutar el código despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+        $propiedad = new Propiedad($_POST);
 
-        // Variables llenas para cuando el name = '$variable' sea rellenado y se guarde lo que escribio el cliente
-        $titulo = mysqli_real_escape_string($db, $_POST["titulo"]);
-        $precio = mysqli_real_escape_string($db, $_POST["precio"]);
-        $descripcion = mysqli_real_escape_string($db, $_POST["descripcion"]);
-        $habitaciones = mysqli_real_escape_string($db, $_POST["habitaciones"]);
-        $wc = mysqli_real_escape_string($db, $_POST["wc"]);
-        $estacionamiento = mysqli_real_escape_string($db, $_POST["estacionamiento"]);
-        $vendedorId = mysqli_real_escape_string($db, $_POST["vendedor"]);
-        $creado = date('Y/m/d');
-
-        // Asignar files hacia una variable
-        $imagen = $_FILES['imagen'];
-
-
-        // Verificacion de la existencia del contenido (mensajes a imprimir en DOM en caso de error)
-        if(!$titulo) {
-            $errores[] = "Debes añadir un titulo";
-        }
-        if(!$precio || $precio <= 0) {
-            $errores[] = "Debes añadir un precio valido";
-        }
-        if(strlen($descripcion) < 50) {
-            $errores[] = "La descripcion es obligatoria y debe tener al menos 50 caracteres";
-        }
-        if(!$habitaciones) {
-            $errores[] = "Debes añadir el numero de habitaciones";
-        }
-        if(!$wc) {
-            $errores[] = "Debes añadir el numero de baños";
-        }
-        if(!$estacionamiento) {
-            $errores[] = "Debes añadir el numero de estacionamientos";
-        }
-        if(!$vendedorId) {
-            $errores[] = "Debes añadir un vendedor";
-        }
-        if(!$imagen['name'] || $imagen['error']) {
-            $errores[] = 'La imagen es obligatoria';
-        }
-
-
-        //Validar por tamaño (1000Kb máximo) 
-        $medida = 1000 * 1000;
-        if($imagen['size'] > $medida) {
-            $errores[] = 'La imagen es muy pesada';
-        }
-
+        $errores = $propiedad->validar();
 
         // Revisar que el arreglo de errores este vacio para enviar la info a la db
         if(empty($errores)) {
+            $propiedad->guardar();
+
+            // Asignar files hacia una variable
+            $imagen = $_FILES['imagen'];
 
             /** SUBIDA DE ARCHIVOS */
 
@@ -98,13 +55,6 @@
 
             //Subir la imagen
             move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
-
-            //Insertar en la base de datos
-            $query = "INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, creado, vendedorId) 
-                    VALUES ('$titulo', '$precio', '$nombreImagen', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado', '$vendedorId')";
-
-            // echo $query | Inserción final en la DB
-            $resultado = mysqli_query($db, $query);
 
             if($resultado) {
                 // Redireccionar al usuario
@@ -166,7 +116,7 @@
             <fieldset>
                 <legend>Vendedor</legend>
 
-                <select name="vendedor">
+                <select name="vendedorId">
                     <option value="">-- Seleccione --</option>
                     <!-- Bucle para insertar un option por cada vendedor de la DB -->
                     <?php while($vendedor = mysqli_fetch_assoc($resultado)) : ?>

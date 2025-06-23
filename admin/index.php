@@ -1,11 +1,7 @@
 <?php
     require '../includes/app.php';
-    $auth = estaAutenticado();
-
-    if(!$auth) {
-        header('location: /');
-    }
-
+    
+    estaAutenticado();
 
     // Importar la conexión
     $db = conectarDB();
