@@ -13,5 +13,7 @@
             "email": "antoniogarcialtr@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "intervention/image": "^3.11"
+    }
 }

@@ -3,6 +3,8 @@
 
     // Importo la clase Propiedad
     use App\Propiedad;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager as Image;
 
     // AUTENTIFICACION DE USUARIO
     estaAutenticado();
@@ -29,33 +31,29 @@
 
     //Ejecutar el código despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-
         $propiedad = new Propiedad($_POST);
+
+        //Generar un nombre único para imagen
+        $nombreImagen = md5( uniqid(rand(), true) ) . ".jpg";
+        if($_FILES['imagen']['tmp_name']) {
+            $manager = new Image(Driver::class);
+            $imagen = $manager->read($_FILES['imagen']['tmp_name'])->cover(800, 600);
+            $propiedad->setImagen($nombreImagen);
+        }
 
         $errores = $propiedad->validar();
 
         // Revisar que el arreglo de errores este vacio para enviar la info a la db
         if(empty($errores)) {
-            $propiedad->guardar();
-
-            // Asignar files hacia una variable
-            $imagen = $_FILES['imagen'];
-
             /** SUBIDA DE ARCHIVOS */
-
-            //Crear carpeta
-            $carpetaImagenes = '../../imagenes/';
-
-            if(!is_dir($carpetaImagenes)){
-                mkdir($carpetaImagenes);
+            if(!is_dir(CARPETA_IMAGENES)){
+                mkdir(CARPETA_IMAGENES);
             }
 
-            //Generar un nombre único
-            $nombreImagen = md5( uniqid(rand(), true) ) . ".jpg";
+            // Guardar la imagen en el Servidor
+            $imagen->save(CARPETA_IMAGENES . $nombreImagen);
 
-            //Subir la imagen
-            move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
-
+            $propiedad->guardar();
             if($resultado) {
                 // Redireccionar al usuario
                 header("Location: /admin?resultado=1");
