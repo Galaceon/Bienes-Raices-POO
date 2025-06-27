@@ -38,7 +38,7 @@ class Propiedad {
         $this->wc = $args['wc'] ?? '';
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('Y/m/d');
-        $this->vendedorId = $args['vendedorId'] ?? '';
+        $this->vendedorId = $args['vendedorId'] ?? 1;
     }
 
     
@@ -110,7 +110,7 @@ class Propiedad {
         if(!$this->imagen) {
             self::$errores[] = 'La imagen es obligatoria';
         }
-        
+
         return self::$errores;
     }
 
@@ -119,4 +119,49 @@ class Propiedad {
             $this->imagen = $imagen;
         }
     }
+
+    // Lista todas las propiedades
+    public static function all() {
+        // Hacemos consulta SQL
+        $query = "SELECT * FROM propiedades";
+
+        // Llamamos a un metodo para recibir la consulta
+        $resultado = self::consultarSQL($query);
+
+        // Devolvemos los resultados de consulta a index.php
+        return $resultado;
+    }
+
+    // Metodo para obtener los objetos  de la consulta
+    public static function consultarSQL($query) {
+        // Consultar la base de datos
+        $resultado = self::$db->query($query);
+
+        // Iterar los resultados
+        $array = [];
+        while($registro = $resultado->fetch_assoc()) {
+            $array[] = self::crearObjeto($registro);
+        }
+
+        // Liberar la memoria
+        $resultado->free();
+
+        // Retornar los resultados
+        return $array;
+    }
+
+    // Pasa de array a objetos, ya que estamos trabajando con activeRecords, el cual pide objetos
+    protected static function crearObjeto($registro) {
+        $objeto = new self;
+
+        foreach($registro as $key => $value) {
+            if(property_exists($objeto, $key)) {
+                $objeto->$key = $value;
+            }
+        }
+        return $objeto;
+    }
+
+
 }
+
