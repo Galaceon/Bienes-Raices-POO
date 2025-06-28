@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Intervention\Image\Colors\Hsv\Channels\Value;
+
 class Propiedad {
 
     // Base de Datos
@@ -41,10 +43,17 @@ class Propiedad {
         $this->vendedorId = $args['vendedorId'] ?? 1;
     }
 
-    
-
-
     public function guardar() {
+        if(!empty($this->id)) {
+            $this->actualizar();
+        } else {
+            $this->crear();
+        }
+    }
+
+
+    public function crear() {
+
         // Sanitizar los datos
         $atributos = $this->sanitizarAtributos();
 
@@ -56,6 +65,36 @@ class Propiedad {
         $query .= " ') ";
 
         $resultado = self::$db->query($query);
+
+        if($resultado) {
+            // Redireccionar al usuario.
+            header('Location: /admin?resultado=1');
+        }
+
+        return $resultado;
+    }
+
+    public function actualizar() {
+
+        // Sanitizar los datos
+        $atributos = $this->sanitizarAtributos();
+
+        $valores = [];
+        foreach($atributos as $key => $value) {
+            $valores[] = "{$key}='{$value}'";
+        }
+
+        $query = "UPDATE propiedades SET ";
+        $query .=  join(', ', $valores );
+        $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
+        $query .= " LIMIT 1 "; 
+
+        $resultado = self::$db->query($query);
+
+        if($resultado) {
+            // Redireccionar al usuario.
+            header('Location: /admin?resultado=2');
+        }
     }
 
     // Idetificar y unir los atributos de la DB
@@ -115,12 +154,23 @@ class Propiedad {
     }
 
     public function setImagen($imagen) {
-        if($imagen) {
+        // Elimina la imagen previa solo si hay ID y una imagen definida
+        if (!empty($this->id) && !empty($this->imagen)) {
+            $rutaImagen = CARPETA_IMAGENES . $this->imagen;
+    
+            // Verificar si el archivo existe y es un archivo (no carpeta)
+            if (file_exists($rutaImagen) && is_file($rutaImagen)) {
+                unlink($rutaImagen);
+            }
+        }
+    
+        // Asignar la nueva imagen
+        if ($imagen) {
             $this->imagen = $imagen;
         }
     }
 
-    // Lista todas las propiedades
+    // Lista todos los registros
     public static function all() {
         // Hacemos consulta SQL
         $query = "SELECT * FROM propiedades";
@@ -132,6 +182,16 @@ class Propiedad {
         return $resultado;
     }
 
+     // Busca un registro por su id
+     public static function find($id) {
+        $query = "SELECT * FROM propiedades WHERE id = $id";
+
+        $resultado = self::consultarSQL($query);
+
+        return array_shift($resultado);
+     }
+
+    
     // Metodo para obtener los objetos  de la consulta
     public static function consultarSQL($query) {
         // Consultar la base de datos
@@ -162,6 +222,14 @@ class Propiedad {
         return $objeto;
     }
 
+    // Sincroniza el objeto en memoria con los cambios realizados por el usuario
+    public function sincronizar($args = []) {
+        foreach($args as $key => $value) {
+            if(property_exists($this, $key) && !is_null($value)) {
+                $this->$key = $value;
+            }
+        }
+    }
 
 }
 

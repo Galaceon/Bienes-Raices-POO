@@ -25,13 +25,17 @@ use Intervention\Image\ImageManager as Image;
 
     //Ejecutar el código despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $propiedad = new Propiedad($_POST);
+        // Crea una nueva instancia
+        $propiedad = new Propiedad($_POST['propiedad']);
 
         //Generar un nombre único para imagen
         $nombreImagen = md5( uniqid(rand(), true) ) . ".jpg";
-        if($_FILES['imagen']['tmp_name']) {
+
+        //Setear la imagen
+        // Realiza un resize a la imagen con intervention
+        if($_FILES['propiedad']['tmp_name']['imagen']) {
             $manager = new Image(Driver::class);
-            $imagen = $manager->read($_FILES['imagen']['tmp_name'])->cover(800, 600);
+            $imagen = $manager->read($_FILES['propiedad']['tmp_name']['imagen'])->cover(800, 600);
             $propiedad->setImagen($nombreImagen);
         }
 
@@ -46,12 +50,7 @@ use Intervention\Image\ImageManager as Image;
 
             // Guardar la imagen en el Servidor
             $imagen->save(CARPETA_IMAGENES . $nombreImagen);
-
-            $propiedad->guardar();
-            if($resultado) {
-                // Redireccionar al usuario
-                header("Location: /admin?resultado=1");
-            }
+            $propiedad->crear();
         }
     }
 
