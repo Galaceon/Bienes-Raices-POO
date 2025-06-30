@@ -42,7 +42,7 @@ use Intervention\Image\ImageManager as Image;
 
         // Validacion
         $errores = $propiedad->validar();
-        debuguear($propiedad);
+        
     
         // SUBIDA DE ARCHIVOS
         // Genera un nombre único

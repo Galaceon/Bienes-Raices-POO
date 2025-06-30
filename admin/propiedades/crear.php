@@ -39,6 +39,7 @@ use Intervention\Image\ImageManager as Image;
             $propiedad->setImagen($nombreImagen);
         }
 
+        // Validar
         $errores = $propiedad->validar();
 
         // Revisar que el arreglo de errores este vacio para enviar la info a la db
@@ -50,7 +51,9 @@ use Intervention\Image\ImageManager as Image;
 
             // Guardar la imagen en el Servidor
             $imagen->save(CARPETA_IMAGENES . $nombreImagen);
-            $propiedad->crear();
+
+
+            $propiedad->guardar();
         }
     }
 
