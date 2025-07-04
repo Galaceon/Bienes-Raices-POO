@@ -1,6 +1,7 @@
 <?php
 
 use App\Propiedad;
+use App\Vendedor;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager as Image;
 
@@ -22,9 +23,9 @@ use Intervention\Image\ImageManager as Image;
     // Obtener los datos de la propiedad
     $propiedad = Propiedad::find($id);
 
-    // Consulta para obtener los vendedores
-    $consulta = "SELECT * FROM vendedores";
-    $resultado = mysqli_query($db, $consulta);
+    // Consulta para obtener todos los vendedores
+    $vendedores = Vendedor::all();
+
 
     // Array con mensajes de errores
     $errores = Propiedad::getErrores();

@@ -3,21 +3,18 @@
 
     // Importo la clase Propiedad
     use App\Propiedad;
+    use App\Vendedor;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager as Image;
 
     // AUTENTIFICACION DE USUARIO
     estaAutenticado();
 
-    // Base de datos
-    $db = conectarDB();
 
     $propiedad = new Propiedad;
 
-    // Consulta para obtener los vendedores
-    $consulta = "SELECT * FROM vendedores";
-    $resultado = mysqli_query($db, $consulta);
-
+    // Consulta para obtener todos los vendedores
+    $vendedores = Vendedor::all();
 
     // Array con mensajes de errores
     $errores = Propiedad::getErrores();
