@@ -62,7 +62,7 @@ class ActiveRecord {
         $query = "UPDATE " . static::$tabla . " SET ";
         $query .=  join(', ', $valores );
         $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
-        $query .= " LIMIT 1 "; 
+        $query .= " LIMIT 1 ";
 
         $resultado = self::$db->query($query);
 
@@ -81,7 +81,7 @@ class ActiveRecord {
         if($resultado) {
             $this->borrarImagen();
 
-            header('location: /admin?resultado=3');      
+            header('location: /admin?resultado=3');
         }
     }
 
@@ -151,6 +151,19 @@ class ActiveRecord {
         // Devolvemos los resultados de consulta a index.php
         return $resultado;
     }
+
+    // Obtiene determinado numero de registros
+    public static function get($cantidad) {
+        // Hacemos consulta SQL
+        $query = "SELECT * FROM " . static::$tabla . " LIMIT " . $cantidad;
+
+        // Llamamos a un metodo para recibir la consulta
+        $resultado = self::consultarSQL($query);
+
+        // Devolvemos los resultados de consulta a index.php
+        return $resultado;
+    }
+
 
      // Busca un registro por su id
      public static function find($id) {
